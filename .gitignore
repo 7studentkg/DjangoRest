@@ -2,3 +2,4 @@ templates
 migrations
 .venv
 \.venv
+db.sqlite3
