@@ -1,4 +1,5 @@
 from django.shortcuts import get_object_or_404
+from django.db.models import Avg
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 
@@ -9,8 +10,16 @@ from .serializers import DirectorSerializer, MovieSerializer, ReviewSerializer
 @api_view(['GET'])
 def director_list(request):
     directors = Director.objects.all()
-    serializer = DirectorSerializer(directors, many=True)
-    return Response(serializer.data)
+    # serializer = DirectorSerializer(directors, many=True)
+    # return Response(serializer.data)
+    director_data = []
+    for director in directors:
+        movies_count = director.movies.count()
+        director_data.append({
+            'director': DirectorSerializer(director).data,
+            'movies_count': movies_count
+        })
+    return Response(director_data)
 
 
 @api_view(['GET'])
@@ -24,6 +33,12 @@ def director_detail(request, id):
 def movie_list(request):
     movies = Movie.objects.all()
     serializer = MovieSerializer(movies, many=True)
+    for movie_data in serializer.data:
+        movie_id = movie_data['id']
+        reviews = Review.objects.filter(movie_id=movie_id)
+        review_serializer = ReviewSerializer(reviews, many=True)
+        movie_data['reviews'] = review_serializer.data
+        movie_data['average_rating'] = reviews.aggregate(Avg('stars'))['stars__avg']
     return Response(serializer.data)
 
 
