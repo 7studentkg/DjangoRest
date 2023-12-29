@@ -6,13 +6,13 @@ from .models import Director, Movie, Review
 class DirectorSerializer(serializers.ModelSerializer):
     class Meta:
         model = Director
-        fields = '__all__'
+        fields = ['id', 'name']
 
 
 class MovieSerializer(serializers.ModelSerializer):
     class Meta:
         model = Movie
-        fields = '__all__'
+        fields = ['id', 'title', 'description', 'duration', 'director']
 
 
 class ReviewSerializer(serializers.ModelSerializer):
