@@ -22,8 +22,8 @@ class MovieSerializer(serializers.ModelSerializer):
 
 class MovieValidaterSerializer(serializers.Serializer):
     title = serializers.CharField()
-    description = serializers.CharField()
-    duration = serializers.IntegerField()
+    description = serializers.CharField(required=False)
+    duration = serializers.IntegerField(max_value=100)
 
 
 
@@ -36,4 +36,4 @@ class ReviewSerializer(serializers.ModelSerializer):
 
 class RiviewValidaterSerializer(serializers.Serializer):
     text = serializers.CharField()
-    stars = serializers.IntegerField()
+    stars = serializers.IntegerField(max_value=100)
