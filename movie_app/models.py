@@ -20,6 +20,7 @@ class Movie(models.Model):
         return self.title
 
 
+
 class Review(models.Model):
     text = models.TextField()
     stars = models.IntegerField(default=1, validators=[MinValueValidator(1), MaxValueValidator(5)])
